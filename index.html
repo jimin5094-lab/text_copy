@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>텍스트 템플릿 생성기</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3B82F6",
+                        "background-light": "#F9FAFB",
+                        "background-dark": "#111827",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* 웹킷 기반 브라우저 스크롤바 커스텀 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div class="max-w-4xl mx-auto px-6 py-12">
+        <!-- Header Section -->
+        <header class="mb-10 text-center md:text-left">
+            <div class="flex items-center gap-3 mb-3 justify-center md:justify-start">
+                <div class="bg-primary p-2 rounded-lg text-white">
+                    <span class="material-symbols-outlined block">auto_fix_high</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tight">텍스트 템플릿 생성기</h1>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-lg">이름과 변수를 넣으면 문장을 자동 생성하고 바로 복사할 수 있습니다.</p>
+        </header>
+
+        <main class="space-y-8">
+            <!-- Input Section (White Card) -->
+            <section
+                class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Names and Variables -->
+                    <div class="space-y-6">
+                        <div>
+                            <label for="nameListInput" class="block text-sm font-semibold mb-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">group</span> 이름 목록
+                            </label>
+                            <textarea id="nameListInput"
+                                class="w-full h-40 rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-primary focus:border-primary transition-all p-4 resize-none"
+                                placeholder="이름을 한 줄에 하나씩 입력하세요&#10;(예: 홍길동&#10;김철수)"></textarea>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="varProduct" class="block text-sm font-medium mb-1.5 text-slate-600 dark:text-slate-400">변수 1</label>
+                                <input id="varProduct"
+                                    class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-primary focus:border-primary h-11 px-4"
+                                    placeholder="예: HTML/CSS" type="text" />
+                            </div>
+                            <div>
+                                <label for="varDiscount" class="block text-sm font-medium mb-1.5 text-slate-600 dark:text-slate-400">변수 2</label>
+                                <input id="varDiscount"
+                                    class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-primary focus:border-primary h-11 px-4"
+                                    placeholder="예: 80%" type="text" />
+                            </div>
+                            <div>
+                                <label for="varDeadline" class="block text-sm font-medium mb-1.5 text-slate-600 dark:text-slate-400">변수 3</label>
+                                <input id="varDeadline"
+                                    class="w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-primary focus:border-primary h-11 px-4"
+                                    placeholder="예: 이번 주 금요일" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Template Definition -->
+                    <div class="flex flex-col">
+                        <label for="templateInput" class="block text-sm font-semibold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">description</span> 템플릿 설정
+                        </label>
+                        <div class="flex-1 relative">
+                            <textarea id="templateInput"
+                                class="w-full h-full min-h-[300px] md:min-h-0 rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-primary focus:border-primary transition-all p-4 resize-none leading-relaxed"
+                                >{이름}님, {변수1}강의 잘 듣고 계신가요? {이름}님의 진도율은 {변수2}입니다! 이번 주까지 모두 수강하셔서 개인프로젝트를 수월하게 하시길 바랄게요ㅎㅎ 팀프로젝트가 시작되는 {변수3}까지는 꼭 강의를 모두 수강해주세요~~!</textarea>
+                            <div class="absolute bottom-4 right-4 flex gap-2 pointer-events-none">
+                                <span class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-1 rounded">TIP:
+                                    {변수명} 사용 가능</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
+                    <button id="generateBtn"
+                        class="w-full md:w-auto px-10 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 duration-200">
+                        <span class="material-symbols-outlined">bolt</span>
+                        문장 생성하기
+                    </button>
+                </div>
+            </section>
+
+            <!-- Result Section (White Card) -->
+            <section
+                class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">analytics</span> 생성 결과
+                    </h2>
+                    <button id="copyAllBtn" style="display: none;"
+                        class="text-sm font-semibold text-primary hover:bg-primary hover:text-white border border-transparent hover:border-transparent flex items-center gap-1.5 bg-primary/5 px-3 py-1.5 rounded-lg transition-all">
+                        <span class="material-symbols-outlined text-sm icon-copy">content_copy</span>
+                        <span class="label-copy">전체 복사</span>
+                    </button>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="py-16 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-100 dark:border-slate-700 rounded-xl transition-all">
+                    <span class="material-symbols-outlined text-5xl mb-3 opacity-20">history_edu</span>
+                    <p class="font-medium text-slate-500">아직 생성된 문장이 없습니다.</p>
+                </div>
+                
+                <!-- List of results -->
+                <div id="resultList" class="space-y-3" style="display: none;">
+                    <!-- JavaScript로 결과물이 여기에 동적으로 추가됩니다 -->
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 text-center text-slate-400 text-sm">
+            <p>© 2024 텍스트 템플릿 생성기. 효율적인 커뮤니케이션을 돕습니다.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 요소를 가져옵니다.
+            const nameListInput = document.getElementById('nameListInput');
+            const varProduct = document.getElementById('varProduct');
+            const varDiscount = document.getElementById('varDiscount');
+            const varDeadline = document.getElementById('varDeadline');
+            const templateInput = document.getElementById('templateInput');
+            
+            const generateBtn = document.getElementById('generateBtn');
+            const copyAllBtn = document.getElementById('copyAllBtn');
+            
+            const emptyState = document.getElementById('emptyState');
+            const resultList = document.getElementById('resultList');
+
+            // 생성된 문장들을 보관할 전역 배열
+            let generatedSentences = [];
+
+            // "문장 생성하기" 버튼 클릭 이벤트
+            generateBtn.addEventListener('click', () => {
+                const namesRaw = nameListInput.value;
+                const templateStr = templateInput.value;
+                
+                // 줄바꿈 기준으로 이름을 배열로 분리, 빈 문자열 제거
+                const names = namesRaw.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+                
+                // 이름이 비어있으면 알림
+                if(names.length === 0) {
+                    alert('이름 목록을 한 줄 이상 입력해주세요.');
+                    return;
+                }
+                if(templateStr.trim() === '') {
+                    alert('템플릿을 입력해주세요.');
+                    return;
+                }
+
+                // 기존 결과 초기화
+                resultList.innerHTML = '';
+                generatedSentences = [];
+
+                const productValue = varProduct.value;
+                const discountValue = varDiscount.value;
+                const deadlineValue = varDeadline.value;
+
+                names.forEach((name) => {
+                    // 정규식을 사용해 모든 치환 대상 문자열을 바꿉니다.
+                    let sentence = templateStr
+                        .replace(/{이름}/g, name)
+                        .replace(/{변수1}/g, productValue)
+                        .replace(/{변수2}/g, discountValue)
+                        .replace(/{변수3}/g, deadlineValue);
+
+                    generatedSentences.push(sentence);
+
+                    // 각 문장을 포함할 컨테이너를 생성합니다.
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'group flex items-start sm:items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-all';
+                    
+                    // 문장 텍스트 요소
+                    const sentenceP = document.createElement('p');
+                    sentenceP.className = 'text-slate-700 dark:text-slate-300 pr-4 whitespace-pre-wrap flex-1';
+                    sentenceP.textContent = sentence;
+
+                    // 복사 버튼
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'flex-shrink-0 ml-4 px-3 py-1.5 text-slate-400 hover:text-primary transition-colors bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-sm opacity-100 sm:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-1 focus:opacity-100';
+                    copyBtn.innerHTML = `
+                        <span class="material-symbols-outlined text-sm icon-copy">content_copy</span>
+                        <span class="text-xs font-semibold label-copy">복사</span>
+                    `;
+
+                    // 개별 복사 버튼 클릭 이벤트
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.clipboard.writeText(sentence);
+                            
+                            // 시각적 피드백 (복사 완료)
+                            const icon = copyBtn.querySelector('.icon-copy');
+                            const label = copyBtn.querySelector('.label-copy');
+                            
+                            icon.textContent = 'check';
+                            icon.classList.add('text-green-500');
+                            label.textContent = '완료';
+                            label.classList.add('text-green-500');
+
+                            setTimeout(() => {
+                                icon.textContent = 'content_copy';
+                                icon.classList.remove('text-green-500');
+                                label.textContent = '복사';
+                                label.classList.remove('text-green-500');
+                            }, 2000);
+                        } catch (err) {
+                            alert('복사에 실패했습니다.');
+                        }
+                    });
+
+                    itemDiv.appendChild(sentenceP);
+                    itemDiv.appendChild(copyBtn);
+                    resultList.appendChild(itemDiv);
+                });
+
+                // 생성 상태 UI 업데이트
+                emptyState.style.display = 'none';
+                resultList.style.display = 'block';
+                copyAllBtn.style.display = 'flex';
+            });
+
+            // 전체 복사 기능
+            copyAllBtn.addEventListener('click', async () => {
+                if(generatedSentences.length === 0) return;
+                
+                const allText = generatedSentences.join('\n');
+                
+                try {
+                    await navigator.clipboard.writeText(allText);
+                    
+                    // 시각적 피드백 (전체 복사 완료)
+                    const icon = copyAllBtn.querySelector('.icon-copy');
+                    const label = copyAllBtn.querySelector('.label-copy');
+                    const originalLabel = label.textContent;
+
+                    icon.textContent = 'check';
+                    label.textContent = '전체 복사 완료!';
+                    copyAllBtn.classList.add('!bg-green-500', '!text-white');
+                    copyAllBtn.classList.remove('text-primary');
+
+                    setTimeout(() => {
+                        icon.textContent = 'content_copy';
+                        label.textContent = originalLabel;
+                        copyAllBtn.classList.remove('!bg-green-500', '!text-white');
+                        copyAllBtn.classList.add('text-primary');
+                    }, 2000);
+                } catch (err) {
+                    alert('전체 복사에 실패했습니다.');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
